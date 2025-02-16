@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chúc Mừng Sinh Nhật</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #ffe6f2;
+            font-family: Arial, sans-serif;
+            color: #d63384;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            color: #d63384;
+            font-size: 2.5em;
+        }
+        .birthday-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px;
+            box-shadow: 0px 0px 20px pink;
+            max-width: 90%;
+            position: relative;
+            z-index: 2; /* Đảm bảo box nằm trên pháo hoa */
+        }
+        .cake {
+            position: relative;
+            width: 150px;
+            height: 100px;
+            background: #ffb3d9;
+            margin: 20px auto;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0px 5px 0px #fbd4e4;
+            z-index: 1;
+        }
+        .layer {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            background: #f35795;
+            top: 40px;
+            border-radius: 10px 10px 0 0;
+        }
+        .candle {
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background: red;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -40px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            line-height: 40px;
+            border-radius: 3px;
+            z-index: 2;
+        }
+        .flame {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background: orange;
+            border-radius: 50%;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        .btn {
+            background-color: #ff66a3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 1;
+        }
+        .confetti {
+            position: fixed; /* Thay đổi từ absolute thành fixed */
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+            top: 0;
+            left: 0;
+            z-index: 0; /* Đảm bảo pháo hoa nằm dưới các phần tử khác */
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-box">
+        <h2>🎉 HAPPY BIRTHDAY NHỌC HIỀN! 🎂</h2>
+        <div>
+            <p> 🐔  </p>
+            </div>
+        <div class="cake">
+            <div class="layer"></div>
+            <div class="candle" id="candle">
+                <div class="flame" id="flame"></div>
+            </div>
+        </div>
+        <p id="message">🎈  thổi nến đi cu em '3' 🎁</p>
+        <button class="btn" onclick="blowCandle()">🎊 Thổi nến 🎊</button>
+        <canvas class="confetti" id="confetti"></canvas>
+    </div>
+
+    <script>
+        function blowCandle() {
+            document.getElementById('message').innerText = "🎉 Điều ước của Hiền Đen đã thành sự thật, sinh nhật vui vẻ nhe em! 🎊";
+            document.getElementById('flame').style.display = 'none';
+            startConfetti();
+        }
+
+        function startConfetti() {
+            const confettiCanvas = document.getElementById("confetti");
+            confettiCanvas.style.display = "block";
+            const ctx = confettiCanvas.getContext("2d");
+
+            // Đặt kích thước canvas bằng với kích thước của màn hình
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+
+            let confetti = [];
+            const confettiCount = 100; // Bạn có thể tăng hoặc giảm số lượng pháo hoa
+            for (let i = 0; i < confettiCount; i++) {
+                confetti.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    r: Math.random() * 5 + 2,
+                    d: Math.random() * 10,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+
+            function drawConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confetti.forEach((c) => {
+                    ctx.fillStyle = c.color;
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+                    ctx.fill();
+                });
+                confetti.forEach((c) => {
+                    c.y += c.d;
+                    if (c.y > confettiCanvas.height) {
+                        c.x = Math.random() * confettiCanvas.width;
+                        c.y = -10;
+                    }
+                });
+                requestAnimationFrame(drawConfetti);
+            }
+            drawConfetti();
+        }
+    </script>
+</body>
+</html>
